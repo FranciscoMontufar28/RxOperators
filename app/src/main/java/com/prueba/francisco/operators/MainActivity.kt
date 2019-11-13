@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var myObservable: Observable<Student>
     private lateinit var myObserver: Observer<Student>
     private val TAG: String = "RxDemo"
-    private var compositeDisposable: CompositeDisposable? = null
+    private var compositeDisposable: CompositeDisposable? = CompositeDisposable()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 it.onComplete()
             }catch (e:Exception){
-
+                Log.i(TAG, "${e.message}")
             }
         }
 
@@ -49,7 +49,27 @@ class MainActivity : AppCompatActivity() {
                 .subscribeWith(getObserver())
         )
 
+        /*myObservable
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {student ->
+                student.name = student.name.toUpperCase()
+                return@map student
+            }
+            .subscribe(object : DisposableObserver<Student>(){
+                override fun onComplete() {
+                    Log.i(TAG, " onComplete invoked")
+                }
 
+                override fun onNext(t: Student) {
+                    tvName.text = t.name
+                }
+
+                override fun onError(e: Throwable) {
+                    Log.i(TAG, " onError invoked")
+                }
+
+            })*/
     }
 
 
@@ -58,7 +78,7 @@ class MainActivity : AppCompatActivity() {
         myObserver = object : DisposableObserver<Student>() {
             override fun onNext(s: Student) {
                 //Log.i(TAG, " onNext invoked with " + s.email)
-                tvName.text = s.name.toString()
+                tvName.text = s.name
             }
 
             override fun onError(e: Throwable) {
@@ -76,7 +96,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun getStudents(): ArrayList<Student> {
 
-        var students: ArrayList<Student>? = null
+        var students: ArrayList<Student>? = ArrayList()
 
         val student1 = Student()
         student1.name = " student 1"
