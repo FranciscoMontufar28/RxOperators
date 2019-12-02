@@ -9,11 +9,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_map_operator.*
 import java.lang.Exception
 
 
-class MainActivity : AppCompatActivity() {
+class MapOperator : AppCompatActivity() {
 
     private lateinit var myObservable: Observable<Student>
     private lateinit var myObserver: Observer<Student>
@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_map_operator)
 
         myObservable = Observable.create {
             try {
@@ -42,9 +42,19 @@ class MainActivity : AppCompatActivity() {
             myObservable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .map {student ->
+                /*.map {student ->
                     student.name = student.name.toUpperCase()
                     return@map student
+                }*/
+                .flatMap {
+                    var student1 : Student = Student()
+                    student1.name = it.name
+
+                    var student2 : Student = Student()
+                    student2.name = "New Student ${it.name}"
+
+                    it.name = it.name.toUpperCase()
+                    return@flatMap Observable.just(it, student2, student1)
                 }
                 .subscribeWith(getObserver())
         )
