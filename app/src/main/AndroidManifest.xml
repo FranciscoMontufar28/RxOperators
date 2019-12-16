@@ -9,6 +9,12 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+        <activity android:name=".subject.PublishSubject">
+        </activity>
+        <activity android:name=".subject.BehaviorSubject">
+        </activity>
+        <activity android:name=".FilterOperator">
+        </activity>
         <activity android:name=".SkipLastOperator">
         </activity>
         <activity android:name=".SkipOperator">
@@ -19,7 +25,7 @@
         </activity>
         <activity android:name=".MapOperator">
         </activity>
-        <activity android:name=".FilterOperator">
+        <activity android:name=".subject.AsynSubject">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
